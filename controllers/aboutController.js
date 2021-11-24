@@ -65,28 +65,28 @@ exports.getAbout = async (req, res, next) => {
                     cities: "$city",
                     pincode: {
                       pincodes: "$pincode",
-                      id: {
-                        _id: "$_id",
-                      },
                     },
                   },
                 },
               },
+              id: {
+                id: "$_id",
+              },
             },
-          },
+          }, //group brace closing
         },
 
         // 2) $group----------------------------------------------
-        // {
-        //   $group: {
-        //     _id: "$_id.country.state.city.pincode.pincodes",
-        //     idArray: {
-        //       $push: {
-        //         idInsidePush: "$_id.country.state.city.pincode.id._id",
-        //       },
-        //     },
-        //   },
-        // },
+        {
+          $group: {
+            _id: "$_id.country",
+            idArray: {
+              $push: {
+                idInsidePush: "$_id.id.id",
+              },
+            },
+          },
+        },
 
         //3) $project---------------------------------------------------
         // {
